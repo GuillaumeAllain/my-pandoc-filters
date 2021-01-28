@@ -5,7 +5,7 @@
 Pandoc filter to use numbers with physical units.
 
 In markdown you should write NUMBER{UNIT}.
-Ex: 10{\\milli \\second}, 2.6{GHz}, etc
+Ex: 10{\\\\milli \\\\second}, 2.6{GHz}, etc
 
 The filter will then separate the number and the unit.
 
@@ -63,10 +63,10 @@ def replace_unit(key, value, format, meta):
                 return RawInline("html", newValue)
 
         elif format == 'latex':
-            replacement = "\\SI{\\1}{\\2}"
+            replacement = r"\\SI{\1}{\2}"
             newValue = pattern.sub(replacement, value)
             if newValue != value:
-                return RawInline("latex", newValue)
+                return RawInline("latex",newValue)
 
         else:
             # For other formats we just add a space between the number and
@@ -74,12 +74,12 @@ def replace_unit(key, value, format, meta):
             replacement = "\\1 \\2"
             newValue = pattern.sub(replacement, value)
             if newValue != value:
-                return Str(newValue)
+                return Str(value)
 
     elif key == 'Math':
         if format == 'latex':
             mathText = value[1]
-            replacement = "\\\\SI{\\1}{\\2}"
+            replacement = r"\\SI{\1}{\2}"
             newMathText = pattern.sub(replacement, mathText)
             if newMathText != mathText:
                 value[1] = newMathText
