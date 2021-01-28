@@ -5,7 +5,7 @@
 Pandoc filter to use numbers with physical units.
 
 In markdown you should write NUMBER{UNIT}.
-Ex: 10{ms}, 2.6{GHz}, etc
+Ex: 10{\\milli \\second}, 2.6{GHz}, etc
 
 The filter will then separate the number and the unit.
 
@@ -20,18 +20,16 @@ For all the other formats "NUMBER{UNIT}" will be replaced with "NUMBER
 UNIT".
 """
 
-from pandocfilters import toJSONFilter, Str, RawInline, Math
 import re
+from pandocfilters import toJSONFilter, Str, RawInline, Math
 
 
 # Match something such as '10{ms}', 30{Htz}, etc.
 # The regex will catch two groups. the first group is the number and the
 # second group is the unit.
 pattern = re.compile(
-    ('(\d+\.?\d*'  # Match either float numbers ...
-     '|'           # or ...
-     '\d+\.?\d*[eE][+-]\d+)'  # numbers in scientific notation
-     '{(.+?)}')  # Followed by the unit inside {}
+    (r'(\d+\.?\d*(?:[eE]?[+-]?\d+)?)'
+     r'{(.+?)}')  # Followed by the unit inside {}
 )
 
 
